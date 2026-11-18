@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body style="background:#111;color:#fff;font-family:sans-serif;text-align:center;padding-top:40px">
+<h2>Dark Rise</h2>
+<div id="g_id_onload"
+  data-client_id="165155069052-bpcsu741lhhv1k27kd9dnvh2s4fd72co.apps.googleusercontent.com"
+  data-callback="ao_logar"
+  data-auto_prompt="false"></div>
+<div class="g_id_signin" data-type="standard" data-size="large"></div>
+<script>
+function ao_logar(resposta) {
+  // devolve o token para o jogo pelo link darkrise://
+  window.location.href = "darkrise://login?token=" + encodeURIComponent(resposta.credential);
+}
+</script>
+</body>
+</html>
