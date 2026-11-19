@@ -7,30 +7,23 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   body { background:#111; color:#fff; font-family:sans-serif; text-align:center; padding-top:40px; margin:0; }
-  #status { margin-top:24px; font-size:18px; color:#aaa; }
+  #statusEl { margin:24px 16px 0; font-size:18px; color:#aaa; }
   #botao { margin-top:24px; display:flex; justify-content:center; }
 </style>
 </head>
 <body>
 <h2>Dark Rise</h2>
-<p id="status">Escolha sua conta Google...</p>
+<p id="statusEl">Escolha sua conta Google...</p>
 <div id="botao"></div>
 
 <script>
 const CLIENT_ID = "165155069052-bpcsu741lhhv1k27kd9dnvh2s4fd72co.apps.googleusercontent.com";
 const SERVIDOR = "https://darkrise-servidor-xix2.onrender.com";
-const PACOTE_APP = "Darkrise.com";
 // codigo da sessao que o jogo manda na URL: ?s=CODIGO
 const sessao = new URLSearchParams(location.search).get("s") || "";
-const status = document.getElementById("status");
+const statusEl = document.getElementById("statusEl");
 
-function mostrar(msg) { status.textContent = msg; }
-
-// Abre o jogo pelo pacote do app (funciona no Chrome do Android sem precisar de intent filter)
-function voltarAoJogo() {
-  location.href = "intent://#Intent;package=" + PACOTE_APP +
-    ";action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;end";
-}
+function mostrar(msg) { statusEl.textContent = msg; }
 
 // Chamado pelo Google quando a conta foi escolhida
 async function aoReceberCredencial(resposta) {
@@ -44,8 +37,7 @@ async function aoReceberCredencial(resposta) {
     });
     const d = await r.json().catch(() => ({}));
     if (!r.ok) { mostrar("Erro: " + (d.erro || r.status) + ". Tente de novo."); return; }
-    mostrar("Login feito! Voltando ao jogo...");
-    voltarAoJogo();
+    mostrar("Login feito! Volte para o jogo pelos apps recentes.");
   } catch (erro) {
     mostrar("Sem conexão com o servidor. Aguarde uns segundos e tente de novo.");
   }
@@ -55,7 +47,7 @@ function iniciarGoogle() {
   google.accounts.id.initialize({
     client_id: CLIENT_ID,
     callback: aoReceberCredencial,
-    auto_select: true,            // se só existe uma conta usada antes, entra sem tocar
+    auto_select: true,
     cancel_on_tap_outside: false
   });
   // botao de reserva: aparece se o seletor automatico nao abrir
